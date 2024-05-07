@@ -4,7 +4,7 @@ import Cookies from 'universal-cookie';
 import "./Login.css";
 
 
-function Login({ setIsAuth }) {
+function Login({ setIsAuth, setWinnerUsername }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -14,12 +14,13 @@ function Login({ setIsAuth }) {
       username,
       password,
     }).then((res) => {
-      const { firstName, lastName, username, token, userId } = res.data;
-      cookies.set("token", token);
-      cookies.set("userId", userId);
+      const { username } = res.data;
+      setWinnerUsername(username);
+      cookies.set("token", res.data.token);
+      cookies.set("userId", res.data.userId);
       cookies.set("username", username);
-      cookies.set("firstName", firstName);
-      cookies.set("lastName", lastName);
+      cookies.set("firstName", res.data.firstName);
+      cookies.set("lastName", res.data.lastName);
       setIsAuth(true);
     });
   };
